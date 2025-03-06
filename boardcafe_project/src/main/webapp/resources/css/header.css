@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+
+*{
+	margin:0;
+	padding:0;
+}
+
+.header-container{
+	display:flex;
+	inset:0;
+	background-color:white;
+	flex-direction:row;
+	padding:0 42px;
+	justify-content:space-between;
+	align-items:center;
+}
+
+
+.header-auth{
+	display:flex;
+	gap:30px;
+}

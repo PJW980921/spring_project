@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<footer class="footer-container">
+	Footer
+</footer>
 </body>
 </html>
