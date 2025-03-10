@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.boardcafe.boardcafe_project.entity.Menu;
 
-public interface MenuMapper {
+public interface MenuRestMapper {
 	
 	@Insert("INSERT INTO backend_spring_project.menu(title,content,writer,indate) VALUES(#{title},#{content},#{writer},#{indate})")
 	public void boardInsert(Menu menu);
