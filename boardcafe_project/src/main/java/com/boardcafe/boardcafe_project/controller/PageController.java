@@ -16,7 +16,9 @@ public class PageController {
 	}
 	
 	@GetMapping("/signin")
-	public String SignIn() {
+	public String SignIn(HttpServletRequest request, Model model) {
+		CsrfToken csrfToken = (CsrfToken)request.getAttribute(CsrfToken.class.getName());
+		model.addAttribute("_csrf", csrfToken);
 		return "signin/index";
 	}
 	
