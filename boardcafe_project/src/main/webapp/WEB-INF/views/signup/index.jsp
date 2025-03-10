@@ -9,6 +9,7 @@
 <body>
 <form action="${pageContext.request.contextPath}/signup" method="post" id="authForm">
 <h2 id="signInTitlte">회원가입</h2>
+<input type="hidden" name="_csrf" value="${_csrf.token}"/>	
 	<div id="inputBox">
 		<label for="username">아이디 </label>
 		<input id="username" type="text" name="username" required/>	

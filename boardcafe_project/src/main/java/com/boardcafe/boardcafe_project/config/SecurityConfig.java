@@ -5,10 +5,13 @@ import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod; // HttpMethod 임포트 추가
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -35,12 +38,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/", "/signin", "/logout", "/signup", "/noticeCheckPage", "/menu/all").permitAll()
-                        .requestMatchers("POST", "/signin").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/signin","/signup").permitAll()
                         .requestMatchers("/resources/**", "/WEB-INF/**").permitAll()
                         .requestMatchers("/noticerAdd", "/noticeModifyPage").hasAnyAuthority("ADMIN", "MANAGER")
-                        .requestMatchers("POST", "/menu/Add").hasAnyAuthority("ADMIN", "MANAGER")
-                        .requestMatchers("POST", "/menu/update").hasAnyAuthority("ADMIN", "MANAGER")
-                        .requestMatchers("DELETE", "/menu/delete").hasAnyAuthority("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/menu/Add").hasAnyAuthority("ADMIN", "MANAGER") 
+                        .requestMatchers(HttpMethod.POST, "/menu/update").hasAnyAuthority("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.DELETE, "/menu/delete").hasAnyAuthority("ADMIN", "MANAGER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
@@ -79,9 +82,15 @@ public class SecurityConfig {
                 session.setAttribute("username", authentication.getName());
                 session.setAttribute("isAuthenticated", true);
                 response.sendRedirect(request.getContextPath() + "/");
-                super.onAuthenticationSuccess(request, response, authentication);
+                // 수정: 중복 리다이렉션 방지를 위해 super 호출 제거
+                // 이전: super.onAuthenticationSuccess(request, response, authentication);
             }
         };
+    }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+    	return new BCryptPasswordEncoder();
     }
 
     @Bean
